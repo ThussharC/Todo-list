@@ -23,7 +23,7 @@ const Todoitems = ({ text, id, isComplete, deleteTodo, toggle }) => {
       </div>
       <img
         onClick={() => {
-          deleteTodo(id);
+          deleteTodo(id); // delete function implementation
         }}
         className="w-3.5 cursor-pointer"
         src={delete_icon}

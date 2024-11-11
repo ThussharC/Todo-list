@@ -1,17 +1,21 @@
 import React, { useEffect, useRef, useState } from "react";
 import todo_icon from "../assets/todo_icon.png";
 import delete_icon from "../assets/delete_icon.png";
+import warning_icon from "../assets/warning.png";
 import Todoitems from "./Todoitems";
+import "./Todo.css";
 
 const Todo = () => {
   const inputRef = useRef();
 
+  //Retaining To-Do item in Local Storage
   const [todoList, setTodoList] = useState(
     localStorage.getItem("todos")
-      ? JSON.parse(localStorage.getItem("todos"))
+      ? JSON.parse(localStorage.getItem("todos")) // Todos object is parsed here
       : []
   ); //array used here to store multiple data
 
+  //Add item function
   const add = () => {
     const inputText = inputRef.current.value.trim();
 
@@ -19,26 +23,27 @@ const Todo = () => {
       return null;
     }
     const newTodo = {
-      id: Date.now(),
-      text: inputText,
-      isComplete: false,
+      id: Date.now(), // Used for add and deleting a particular entry
+      text: inputText, // Text goes here
+      isComplete: false, // Used for toggling
     };
 
-    setTodoList((prev) => [...prev, newTodo]);
-    inputRef.current.value = "";
+    setTodoList((prev) => [...prev, newTodo]); // Previous entries are combined with new entries
+    inputRef.current.value = ""; //Input field is made empty
   };
-
+  // Delete item function
   const deleteTodo = (id) => {
     setTodoList((prevTodos) => {
-      return prevTodos.filter((todo) => todo.id !== id);
+      return prevTodos.filter((todo) => todo.id !== id); //Checks for the todo item Id and if it matches with the ID then it will not be displayed
     });
   };
+  //Toggle complete function
 
   const toggle = (id) => {
     setTodoList((prevTodos) => {
       return prevTodos.map((todo) => {
         if (todo.id === id) {
-          return { ...todo, isComplete: !todo.isComplete };
+          return { ...todo, isComplete: !todo.isComplete }; // Operation toggles the present state of the isComplete object
         }
         return todo;
       });
@@ -46,7 +51,7 @@ const Todo = () => {
   };
 
   useEffect(() => {
-    localStorage.setItem("todos", JSON.stringify(todoList));
+    localStorage.setItem("todos", JSON.stringify(todoList)); //Array is stringied for storage in the local browser
   }, [todoList]);
   return (
     <div className="bg-white place-self-center w-11/12 max-w-md flex flex-col p-7 min-h-[550px] rounded-xl">
@@ -84,6 +89,11 @@ const Todo = () => {
           );
         })}
       </div>
+      <footer>
+        <img src={warning_icon} alt="" />
+        <span>Warning</span>This is a private copy. Not for commerical use.
+        Illegal usage will be subject to prosecution
+      </footer>
     </div>
   );
 };
